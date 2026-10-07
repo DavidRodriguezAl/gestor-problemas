@@ -48,7 +48,6 @@ export default function Home() {
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState('')
 
-  // Estado para el formulario de "agregar solución" que se abre por problema
   const [solucionAbierta, setSolucionAbierta] = useState<number | null>(null)
   const [nuevaSolucion, setNuevaSolucion] = useState({ texto: '', persona_id: '' })
   const [guardandoSolucion, setGuardandoSolucion] = useState(false)
@@ -235,7 +234,7 @@ export default function Home() {
       </form>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 p-3 rounded mb-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 p-3 rounded mb-4 break-words">
           {error}
         </div>
       )}
@@ -263,13 +262,13 @@ export default function Home() {
           const tieneAceptada = p.soluciones?.some(s => s.aceptada)
           return (
             <div key={p.id} className="bg-white shadow rounded-lg p-4">
-              <div className="flex justify-between items-start gap-3">
-                <div className="flex-1">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 flex-wrap">
                     <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded font-mono">
                       #{p.id}
                     </span>
-                    <h2 className="font-bold text-lg">{p.empresa}</h2>
+                    <h2 className="font-bold text-lg break-words">{p.empresa}</h2>
                     {tieneAceptada && (
                       <span className="text-xs bg-green-600 text-white px-2 py-1 rounded">
                         ✅ Resuelto
@@ -290,7 +289,7 @@ export default function Home() {
                     </span>
                   </div>
                   {(p.telefono || p.correo) && (
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-gray-500 mt-2 break-words">
                       {p.telefono && <>📞 {p.telefono} </>}
                       {p.correo && <>✉️ {p.correo}</>}
                     </p>
@@ -298,29 +297,29 @@ export default function Home() {
                 </div>
                 <button
                   onClick={() => eliminar(p.id)}
-                  className="text-red-600 hover:underline text-sm flex-shrink-0"
+                  className="text-red-600 hover:underline text-sm self-start flex-shrink-0"
                 >
                   Eliminar
                 </button>
               </div>
 
-              <p className="mt-2 text-gray-700">{p.descripcion}</p>
+              <p className="mt-2 text-gray-700 break-words">{p.descripcion}</p>
 
               {p.solucion && (
-                <p className="mt-2 text-sm bg-green-50 border-l-4 border-green-500 p-2">
+                <p className="mt-2 text-sm bg-green-50 border-l-4 border-green-500 p-2 break-words">
                   <strong>Solución inicial:</strong> {p.solucion}
                 </p>
               )}
 
               {/* Soluciones adicionales */}
               <div className="mt-3 border-t pt-3">
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                   <h3 className="font-semibold text-sm text-gray-700">
                     Soluciones adicionales ({p.soluciones?.length || 0})
                   </h3>
                   <button
                     onClick={() => abrirFormSolucion(p.id)}
-                    className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded"
+                    className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded self-start sm:self-auto"
                   >
                     {solucionAbierta === p.id ? 'Cancelar' : '+ Agregar solución'}
                   </button>
@@ -337,15 +336,15 @@ export default function Home() {
                       s.aceptada ? 'bg-green-50 border-green-500' : 'bg-gray-50 border-gray-300'
                     }`}
                   >
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="flex-1">
-                        <p className="text-gray-800">{s.texto}</p>
-                        <p className="text-xs text-gray-500 mt-1">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-800 break-words">{s.texto}</p>
+                        <p className="text-xs text-gray-500 mt-1 break-words">
                           {s.personas?.nombre || 'Anónimo'} · {new Date(s.created_at).toLocaleString('es-ES')}
                         </p>
                       </div>
-                      <div className="flex flex-col items-end gap-1">
-                        <label className="flex items-center gap-1 text-xs cursor-pointer">
+                      <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-1 flex-shrink-0">
+                        <label className="flex items-center gap-1 text-xs cursor-pointer whitespace-nowrap">
                           <input
                             type="checkbox"
                             checked={s.aceptada}
@@ -355,7 +354,7 @@ export default function Home() {
                         </label>
                         <button
                           onClick={() => eliminarSolucion(s.id)}
-                          className="text-red-600 hover:underline text-xs"
+                          className="text-red-600 hover:underline text-xs whitespace-nowrap"
                         >
                           Eliminar
                         </button>
@@ -373,7 +372,7 @@ export default function Home() {
                       value={nuevaSolucion.texto}
                       onChange={e => setNuevaSolucion({ ...nuevaSolucion, texto: e.target.value })}
                     />
-                    <div className="flex gap-2 flex-col sm:flex-row">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <select
                         className="border p-2 rounded text-sm flex-1"
                         value={nuevaSolucion.persona_id}
